@@ -29,7 +29,7 @@ const UserTable = ({users}) => {
               <Table.Cell>
                 <Link href={`/user/${user._id}`}><Button variant='outline'>Details</Button></Link>
                 <Link href={`/user/${user._id}/edit`}><Button variant='outline'>Edit</Button></Link>
-                <Delete/>
+                <Delete user={user}/>
               </Table.Cell>
             </Table.Row>
               )})

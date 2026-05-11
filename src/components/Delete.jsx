@@ -1,7 +1,29 @@
+'use client'
 import { AlertDialog, Button } from '@heroui/react';
+import { redirect } from 'next/navigation';
 import React from 'react';
+//import { toast } from 'react-toastify';
 
-const Delete = () => {
+const Delete = ({user}) => {
+  const handleDelete = async()=>{
+  const res = await fetch(`http://localhost:5000/users/${user._id}`,{
+    method: "DELETE",
+    headers: {
+      'content-type': 'application/json' 
+    },
+  })
+  const data = await res.json()
+//  if (data) {
+//     toast.success('user item is successfully delete')
+//   }
+//   else{
+//     toast.error('something went wrong')
+//   }
+  redirect('/user')
+
+ 
+   }
+
   return (
      <AlertDialog>
       <Button variant="danger">Delete</Button>
@@ -23,7 +45,7 @@ const Delete = () => {
               <Button slot="close" variant="tertiary">
                 Cancel
               </Button>
-              <Button slot="close" variant="danger">
+              <Button variant="danger" onClick={()=>handleDelete(user._id)}>
                 Delete
               </Button>
             </AlertDialog.Footer>

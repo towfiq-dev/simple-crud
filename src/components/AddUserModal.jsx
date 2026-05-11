@@ -1,9 +1,35 @@
 "use client";
 import {Envelope} from "@gravity-ui/icons";
 import {Button, Input, Label, Modal, Surface, TextField} from "@heroui/react";
+//import { revalidatePath } from "next/cache";
+
+import { toast } from "react-toastify";
 
 
 const AddUserModal = () => {
+  const onSubmit = async(e)=>{
+    e.preventDefault()
+    const formData = new FormData(e.currentTarget)
+    const getPost = Object.fromEntries(formData.entries())
+    const res = await fetch('http://localhost:5000/users',{
+      method: "POST",
+      headers:{
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify(getPost)
+    })
+    const data = await res.json()
+    // if (data.insertedId) {
+    //   revalidatePath('/user')
+    // }
+     if (data) {
+    toast.success('user item is successfully added')
+  }
+  else{
+    toast.error('something went wrong')
+  }
+
+  }
   return (
     <div>
       <Modal>
@@ -23,8 +49,8 @@ const AddUserModal = () => {
               </p>
             </Modal.Header>
             <Modal.Body className="p-6">
-              <Surface variant="default">
-                <form className="flex flex-col gap-4">
+              <Surface variant="default" >
+                <form className="flex flex-col gap-4" onSubmit={onSubmit}>
                   <TextField className="w-full" name="name" type="text">
                     <Label>Name</Label>
                     <Input placeholder="Enter your name" />
@@ -45,12 +71,12 @@ const AddUserModal = () => {
                     <Label>Description</Label>
                     <Input placeholder="Enter your description" />
                   </TextField>
-                  <Modal.Footer>
+
               <Button slot="close" variant="secondary">
                 Cancel
               </Button>
               <Button type="submit">Submit</Button>
-            </Modal.Footer>
+
                 </form>
               </Surface>
             </Modal.Body>
